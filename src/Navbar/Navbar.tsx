@@ -1,6 +1,6 @@
 import { AppBar, IconButton, Stack, Toolbar, Tooltip, Typography } from '@mui/material';
 import { FC } from 'react';
-import { title, tooltipTitle } from './constants';
+import { TITLE, TOOLTIP_TITLE } from './constants';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 export const Navbar: FC = () => {
@@ -13,12 +13,12 @@ export const Navbar: FC = () => {
 					justifyContent='space-between'
 					alignItems='center'
 					mx={2}>
-					<Tooltip title={tooltipTitle}>
+					<Tooltip title={TOOLTIP_TITLE}>
 						<IconButton sx={{ ':focus': { outline: 0 } }}>
 							<RestartAltIcon fontSize='large' htmlColor='white' />
 						</IconButton>
 					</Tooltip>
-					<Typography variant='h3'>{title}</Typography>
+					<Typography variant='h3'>{TITLE}</Typography>
 				</Stack>
 			</Toolbar>
 		</AppBar>

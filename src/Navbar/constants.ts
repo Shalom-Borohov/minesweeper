@@ -1,2 +1,2 @@
-export const title: string = 'שוּלָה המוקשים';
-export const tooltipTitle: string = 'משחק חדש';
+export const TITLE: string = 'שוּלָה המוקשים';
+export const TOOLTIP_TITLE: string = 'משחק חדש';
