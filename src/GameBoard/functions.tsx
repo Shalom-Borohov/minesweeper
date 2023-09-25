@@ -16,6 +16,7 @@ import { ReactElement } from 'react';
 import { Grid, GridTypeMap } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { BoardCell, BoardCellProps } from './BoardCell';
+import { v4 as uuidv4 } from 'uuid';
 
 // eslint-disable-next-line lodash-fp/use-fp
 import { CurriedFunction1 } from 'lodash';
@@ -100,11 +101,11 @@ const incrementCellsAroundBomb =
 export const renderBoardRow = (
 	rowValues: number[]
 ): ReactElement<OverridableComponent<GridTypeMap>> => (
-	<Grid container item direction='row'>
+	<Grid container item direction='row' key={uuidv4()} justifyContent='center' alignItems='center'>
 		{map(renderBoardCell, rowValues)}
 	</Grid>
 );
 
 const renderBoardCell = (cellValue: number): ReactElement<BoardCellProps> => (
-	<BoardCell {...{ cellValue }} />
+	<BoardCell {...{ cellValue }} key={uuidv4()} />
 );

@@ -7,9 +7,5 @@ import { renderBoardRow } from './functions';
 export const GameBoard: FC = () => {
 	const [gameBoard] = useState<number[][]>(initializeGameBoard);
 
-	return (
-		<Grid container direction='column'>
-			{map(renderBoardRow, gameBoard)}
-		</Grid>
-	);
+	return <Grid container>{map(renderBoardRow, gameBoard)}</Grid>;
 };
