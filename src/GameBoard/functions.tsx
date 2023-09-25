@@ -12,11 +12,15 @@ import {
 } from 'lodash/fp';
 import { BOARD_LENGTH, BOARD_WIDTH, BOMB, BOMBS_AMOUNT, EMPTY_CELL } from './constants';
 import { Coordinate } from './types';
+import { ReactElement } from 'react';
+import { Grid, GridTypeMap } from '@mui/material';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
+import { BoardCell, BoardCellProps } from './BoardCell';
 
 // eslint-disable-next-line lodash-fp/use-fp
 import { CurriedFunction1 } from 'lodash';
 
-export const initGameBoard = (): number[][] => {
+export const initializeGameBoard = (): number[][] => {
 	const gameBoard: number[][] = createEmptyBoard();
 
 	const bombsCoordinates: Coordinate[] = times<Coordinate>(() => addBomb(gameBoard), BOMBS_AMOUNT);
@@ -92,3 +96,15 @@ const incrementCellsAroundBomb =
 
 		each(pipe(getNewCoordinate(coordinate), incrementCell(gameBoard)), directions);
 	};
+
+export const renderBoardRow = (
+	rowValues: number[]
+): ReactElement<OverridableComponent<GridTypeMap>> => (
+	<Grid container item direction='row'>
+		{map(renderBoardCell, rowValues)}
+	</Grid>
+);
+
+const renderBoardCell = (cellValue: number): ReactElement<BoardCellProps> => (
+	<BoardCell {...{ cellValue }} />
+);
