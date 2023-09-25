@@ -1,11 +1,9 @@
 import { Grid } from '@mui/material';
-import { FC, useState } from 'react';
-import { initializeGameBoard } from '.';
+import { FC } from 'react';
 import { map } from 'lodash/fp';
 import { renderBoardRow } from './functions';
+import { GameBoardProps } from './types';
 
-export const GameBoard: FC = () => {
-	const [gameBoard] = useState<number[][]>(initializeGameBoard);
-
-	return <Grid container>{map(renderBoardRow, gameBoard)}</Grid>;
-};
+export const GameBoard: FC<GameBoardProps> = ({ gameBoard, ...props }) => (
+	<Grid container>{map(renderBoardRow(props), gameBoard)}</Grid>
+);

@@ -3,6 +3,7 @@ import { NumericDictionary } from 'lodash';
 
 export const CELL_WIDTH = 50;
 export const CELL_HEIGHT = 50;
+export const LOSER_DIALOG_DELAY_TIME_MS = 100;
 export const CELL_VALUE_COLORS: NumericDictionary<string> = {
 	0: 'black',
 	1: 'blue',

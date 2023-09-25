@@ -98,14 +98,19 @@ const incrementCellsAroundBomb =
 		each(pipe(getNewCoordinate(coordinate), incrementCell(gameBoard)), directions);
 	};
 
-export const renderBoardRow = (
-	rowValues: number[]
-): ReactElement<OverridableComponent<GridTypeMap>> => (
-	<Grid container item direction='row' key={uuidv4()} justifyContent='center' alignItems='center'>
-		{map(renderBoardCell, rowValues)}
-	</Grid>
+export const renderBoardRow = curry(
+	(
+		boardCellProps: Partial<BoardCellProps>,
+		rowValues: number[]
+	): ReactElement<OverridableComponent<GridTypeMap>> => (
+		<Grid container item direction='row' key={uuidv4()} justifyContent='center' alignItems='center'>
+			{map(renderBoardCell(boardCellProps), rowValues)}
+		</Grid>
+	)
 );
 
-const renderBoardCell = (cellValue: number): ReactElement<BoardCellProps> => (
-	<BoardCell {...{ cellValue }} key={uuidv4()} />
+const renderBoardCell = curry(
+	(boardCellProps: Partial<BoardCellProps>, cellValue: number): ReactElement<BoardCellProps> => (
+		<BoardCell {...{ cellValue }} key={uuidv4()} {...boardCellProps} />
+	)
 );

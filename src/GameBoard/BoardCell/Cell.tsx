@@ -5,15 +5,24 @@ import { BOMB } from '../constants';
 import CrisisAlertIcon from '@mui/icons-material/CrisisAlert';
 import TourIcon from '@mui/icons-material/Tour';
 import { inheritSizeStyle } from './styles';
-import { CELL_HEIGHT, CELL_VALUE_COLORS, CELL_WIDTH } from './constants';
+import {
+	CELL_HEIGHT,
+	CELL_VALUE_COLORS,
+	CELL_WIDTH,
+	LOSER_DIALOG_DELAY_TIME_MS,
+} from './constants';
 import { F, T, over, pipe } from 'lodash/fp';
 
-export const BoardCell: FC<BoardCellProps> = ({ cellValue }) => {
+export const BoardCell: FC<BoardCellProps> = ({ cellValue, setIsLoserDialogOpen }) => {
 	const [isRevealed, setIsRevealed] = useState<boolean>(false);
 	const [isFlagged, setIsFlagged] = useState<boolean>(false);
 
 	const preventDefault = (event: MouseEvent): void => event.preventDefault();
-	const toggleFlagged = (): void => setIsFlagged((isFlagged) => !isFlagged);
+	const toggleFlagged = (): void => setIsFlagged((isFlagged: boolean): boolean => !isFlagged);
+
+	const delayOpenLoserDialog = (): void => {
+		setTimeout(() => setIsLoserDialogOpen(cellValue === BOMB), LOSER_DIALOG_DELAY_TIME_MS);
+	};
 
 	return (
 		<Grid item width={CELL_WIDTH} height={CELL_HEIGHT}>
@@ -25,7 +34,7 @@ export const BoardCell: FC<BoardCellProps> = ({ cellValue }) => {
 				}}>
 				<CardActionArea
 					sx={{ ...inheritSizeStyle, ':hover': { backgroundColor: '#b5ef77' } }}
-					onClick={over([pipe(T, setIsRevealed), pipe(F, setIsFlagged)])}
+					onClick={over([pipe(T, setIsRevealed), pipe(F, setIsFlagged), delayOpenLoserDialog])}
 					disabled={isRevealed}
 					onContextMenu={over([preventDefault, toggleFlagged])}>
 					<Box
