@@ -34,6 +34,7 @@ export const initializeGameBoard = (): number[][] => {
     () => addBomb(gameBoard),
     BOMBS_AMOUNT
   );
+
   const directions: CurriedFunction1<Coordinate, Coordinate>[] =
     createDirections();
 
