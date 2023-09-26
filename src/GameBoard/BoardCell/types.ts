@@ -1,6 +1,7 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from "react";
 
 export interface BoardCellProps {
-	cellValue: number;
-	setIsLoserDialogOpen: Dispatch<SetStateAction<boolean>>;
+  cellValue: number;
+  setIsLoserDialogOpen: Dispatch<SetStateAction<boolean>>;
+  setIsWinnerDialogOpen: Dispatch<SetStateAction<boolean>>;
 }

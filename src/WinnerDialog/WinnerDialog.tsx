@@ -1,18 +1,12 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@mui/material";
+import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
 import { FC, useContext } from "react";
-import { LoserDialogProps } from "./types";
 import { F, over, pipe } from "lodash/fp";
-import { GAME_OVER_TEXT, GAME_OVER_TITLE, NEW_GAME_TEXT } from "./constants";
+import { GAME_WON_TITLE, NEW_GAME_TEXT } from "./constants";
+import { WinnerDialogProps } from "./types";
 import { RevealedCellsContextValue } from "../context/types";
 import { RevealedCellsContext } from "../context";
 
-export const LoserDialog: FC<LoserDialogProps> = ({
+export const WinnerDialog: FC<WinnerDialogProps> = ({
   isOpen,
   setIsOpen,
   resetGameBoard,
@@ -22,12 +16,11 @@ export const LoserDialog: FC<LoserDialogProps> = ({
 
   return (
     <Dialog open={isOpen}>
-      <DialogTitle textAlign="center">{GAME_OVER_TITLE}</DialogTitle>
-      <DialogContent>{GAME_OVER_TEXT}</DialogContent>
+      <DialogTitle textAlign="center">{GAME_WON_TITLE}</DialogTitle>
       <DialogActions>
         <Button
-          variant="outlined"
           autoFocus
+          variant="outlined"
           onClick={over([
             pipe(F, setIsOpen),
             resetGameBoard,
