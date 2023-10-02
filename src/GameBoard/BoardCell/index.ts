@@ -1,2 +1,2 @@
-export { BoardCell } from './Cell';
+export { BoardCell } from './BoardCell';
 export type { BoardCellProps } from './types';

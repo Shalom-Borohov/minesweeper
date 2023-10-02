@@ -1,23 +1,27 @@
-import { Icon, Stack, Typography } from "@mui/material";
-import CrisisAlertIcon from "@mui/icons-material/CrisisAlert";
-import { FC } from "react";
-import { CELL_WIDTH } from "../GameBoard/BoardCell/constants";
-import { BOARD_WIDTH, BOMBS_AMOUNT } from "../GameBoard/constants";
+import { Icon, Stack, Typography } from '@mui/material';
+import CrisisAlertIcon from '@mui/icons-material/CrisisAlert';
+import { FC } from 'react';
+import { FlagsAmountIndicatorProps } from './types';
+import { PROPS_BY_DIFFICULTY } from '../GameBoard/constants';
 
-export const FlagsAmountIndicator: FC = () => (
-  <Stack direction="row" justifyContent="center">
-    <Stack
-      direction="row"
-      width={CELL_WIDTH * BOARD_WIDTH}
-      mb={1}
-      alignItems="baseline"
-    >
-      <Icon fontSize="medium">
-        <CrisisAlertIcon htmlColor="red" />
-      </Icon>
-      <Typography fontSize="x-large" fontWeight="400" ml={1} textAlign="start">
-        {BOMBS_AMOUNT}
-      </Typography>
-    </Stack>
-  </Stack>
-);
+export const FlagsAmountIndicator: FC<FlagsAmountIndicatorProps> = ({ difficultyLevel }) => {
+	const { rowCellsAmount, bombsAmount, cellSize } = PROPS_BY_DIFFICULTY[difficultyLevel];
+
+	return (
+		<Stack direction='row' justifyContent='center'>
+			<Stack direction='row' width={cellSize * rowCellsAmount} mb={1} alignItems='baseline'>
+				<Icon fontSize='medium'>
+					<CrisisAlertIcon htmlColor='red' />
+				</Icon>
+				<Typography
+					fontSize='x-large'
+					fontWeight='400'
+					ml={1}
+					textAlign='start'
+					sx={{ userSelect: 'none' }}>
+					{bombsAmount}
+				</Typography>
+			</Stack>
+		</Stack>
+	);
+};
