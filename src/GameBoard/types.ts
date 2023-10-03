@@ -6,10 +6,11 @@ export interface Coordinate {
 }
 
 export interface GameBoardProps {
-	gameBoard: number[][];
+	gameBoard: BoardCellState[][];
 	setIsLoserDialogOpen: Dispatch<SetStateAction<boolean>>;
 	setIsWinnerDialogOpen: Dispatch<SetStateAction<boolean>>;
 	difficultyLevel: DifficultyLevel;
+	updateGameBoard: (row: number, column: number, cellState: BoardCellState) => void;
 }
 
 export interface GameBoardDifficultyProps {
@@ -20,5 +21,11 @@ export interface GameBoardDifficultyProps {
 }
 
 export type DifficultyLevel = 'easy' | 'medium' | 'hard';
-
 export type PropsByDifficulty = Record<DifficultyLevel, GameBoardDifficultyProps>;
+export interface BoardCellState {
+	isRevealed: boolean;
+	isFlagged: boolean;
+	cellValue: number;
+	row: number;
+	column: number;
+}

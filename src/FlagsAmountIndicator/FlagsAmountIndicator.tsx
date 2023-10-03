@@ -5,11 +5,11 @@ import { FlagsAmountIndicatorProps } from './types';
 import { PROPS_BY_DIFFICULTY } from '../GameBoard/constants';
 
 export const FlagsAmountIndicator: FC<FlagsAmountIndicatorProps> = ({ difficultyLevel }) => {
-	const { rowCellsAmount, bombsAmount, cellSize } = PROPS_BY_DIFFICULTY[difficultyLevel];
+	const { columnCellsAmount, bombsAmount, cellSize } = PROPS_BY_DIFFICULTY[difficultyLevel];
 
 	return (
 		<Stack direction='row' justifyContent='center'>
-			<Stack direction='row' width={cellSize * rowCellsAmount} mb={1} alignItems='baseline'>
+			<Stack direction='row' width={cellSize * columnCellsAmount} mb={1} alignItems='baseline'>
 				<Icon fontSize='medium'>
 					<CrisisAlertIcon htmlColor='red' />
 				</Icon>

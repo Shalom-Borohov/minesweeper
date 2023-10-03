@@ -1,8 +1,7 @@
-import { Dispatch, SetStateAction } from 'react';
-import { GameBoardDifficultyProps } from '../types';
+import { BoardCellState, GameBoardDifficultyProps } from '../types';
 
-export interface BoardCellProps extends GameBoardDifficultyProps {
-	cellValue: number;
-	setIsLoserDialogOpen: Dispatch<SetStateAction<boolean>>;
-	setIsWinnerDialogOpen: Dispatch<SetStateAction<boolean>>;
+export interface BoardCellProps
+	extends Pick<GameBoardDifficultyProps, 'rowCellsAmount' | 'cellSize'> {
+	cellState: BoardCellState;
+	updateGameBoard: (row: number, column: number, cellState: BoardCellState) => void;
 }

@@ -1,42 +1,29 @@
-import { FC, useState, useContext } from 'react';
+import { FC, SyntheticEvent } from 'react';
 import { BoardCellProps } from './types';
 import { Box, Card, CardActionArea, Grid, Typography } from '@mui/material';
 import { BOMB } from '../constants';
 import CrisisAlertIcon from '@mui/icons-material/CrisisAlert';
 import TourIcon from '@mui/icons-material/Tour';
 import { inheritSizeStyle } from './styles';
-import { CELL_VALUE_COLORS, LOSER_DIALOG_DELAY_TIME_MS } from './constants';
-import { F, T, over, pipe } from 'lodash/fp';
-import { RevealedCellsContextValue } from '../../context/types';
-import { RevealedCellsContext } from '../../context';
+import { CELL_VALUE_COLORS } from './constants';
 
 export const BoardCell: FC<BoardCellProps> = ({
-	cellValue,
-	setIsLoserDialogOpen,
-	setIsWinnerDialogOpen,
-	bombsAmount,
-	columnCellsAmount,
+	cellState,
+	updateGameBoard,
 	rowCellsAmount,
 	cellSize,
 }) => {
-	const [isRevealed, setIsRevealed] = useState<boolean>(false);
-	const [isFlagged, setIsFlagged] = useState<boolean>(false);
-	const { incrementRevealedCells, revealedCells } =
-		useContext<RevealedCellsContextValue>(RevealedCellsContext);
+	const { cellValue, isFlagged, isRevealed, row, column } = cellState;
 
-	const stopPropagation = (event: MouseEvent): void => event.stopPropagation();
-	const preventDefault = (event: MouseEvent): void => event.preventDefault();
-	const toggleFlagged = (): void => setIsFlagged((isFlagged: boolean): boolean => !isFlagged);
+	const toggleFlagged = (event: SyntheticEvent): void => {
+		event.stopPropagation();
+		event.preventDefault();
 
-	const checkOpenLoserDialog = (): void => {
-		cellValue === BOMB && setTimeout(pipe(T, setIsLoserDialogOpen), LOSER_DIALOG_DELAY_TIME_MS);
+		updateGameBoard(row, column, { ...cellState, isFlagged: !isFlagged });
 	};
 
-	const checkOpenWinnerDialog = (): void => {
-		const totalCells = columnCellsAmount * rowCellsAmount;
-
-		setIsWinnerDialogOpen(cellValue !== BOMB && totalCells - revealedCells - 1 === bombsAmount);
-	};
+	const revealCell = () =>
+		updateGameBoard(row, column, { ...cellState, isFlagged: false, isRevealed: true });
 
 	return (
 		<Grid
@@ -53,14 +40,8 @@ export const BoardCell: FC<BoardCellProps> = ({
 				<CardActionArea
 					sx={{ ...inheritSizeStyle, ':hover': { backgroundColor: '#b5ef77' } }}
 					disableTouchRipple
-					onContextMenu={over([stopPropagation, preventDefault, toggleFlagged])}
-					onClick={over([
-						incrementRevealedCells,
-						pipe(T, setIsRevealed),
-						pipe(F, setIsFlagged),
-						checkOpenLoserDialog,
-						checkOpenWinnerDialog,
-					])}
+					onContextMenu={toggleFlagged}
+					onClick={revealCell}
 					disabled={isRevealed}>
 					<Box
 						width='inherit'
