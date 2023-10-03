@@ -1,17 +1,20 @@
 import { Icon, Stack, Typography } from '@mui/material';
-import CrisisAlertIcon from '@mui/icons-material/CrisisAlert';
+import TourIcon from '@mui/icons-material/Tour';
 import { FC } from 'react';
 import { FlagsAmountIndicatorProps } from './types';
 import { PROPS_BY_DIFFICULTY } from '../GameBoard/constants';
 
-export const FlagsAmountIndicator: FC<FlagsAmountIndicatorProps> = ({ difficultyLevel }) => {
-	const { columnCellsAmount, bombsAmount, cellSize } = PROPS_BY_DIFFICULTY[difficultyLevel];
+export const FlagsAmountIndicator: FC<FlagsAmountIndicatorProps> = ({
+	difficultyLevel,
+	flagsAmount,
+}) => {
+	const { columnCellsAmount, cellSize } = PROPS_BY_DIFFICULTY[difficultyLevel];
 
 	return (
 		<Stack direction='row' justifyContent='center'>
 			<Stack direction='row' width={cellSize * columnCellsAmount} mb={1} alignItems='baseline'>
 				<Icon fontSize='medium'>
-					<CrisisAlertIcon htmlColor='red' />
+					<TourIcon htmlColor='red' />
 				</Icon>
 				<Typography
 					fontSize='x-large'
@@ -19,7 +22,7 @@ export const FlagsAmountIndicator: FC<FlagsAmountIndicatorProps> = ({ difficulty
 					ml={1}
 					textAlign='start'
 					sx={{ userSelect: 'none' }}>
-					{bombsAmount}
+					{flagsAmount}
 				</Typography>
 			</Stack>
 		</Stack>

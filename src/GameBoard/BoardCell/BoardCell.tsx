@@ -22,8 +22,11 @@ export const BoardCell: FC<BoardCellProps> = ({
 		updateGameBoard(row, column, { ...cellState, isFlagged: !isFlagged });
 	};
 
-	const revealCell = () =>
-		updateGameBoard(row, column, { ...cellState, isFlagged: false, isRevealed: true });
+	const revealCell = (): void => {
+		if (!isFlagged) {
+			updateGameBoard(row, column, { ...cellState, isRevealed: true });
+		}
+	};
 
 	return (
 		<Grid

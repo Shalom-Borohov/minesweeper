@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { Navbar } from './Navbar';
 import { GameBoard, initializeGameBoard } from './GameBoard';
-import { pipe, set, map, flatten, prop, reject, propEq } from 'lodash/fp';
+import { pipe, set, map, flatten, prop, reject, propEq, add } from 'lodash/fp';
 import { LoserDialog } from './LoserDialog';
 import { FlagsAmountIndicator } from './FlagsAmountIndicator';
 import { WinnerDialog } from './WinnerDialog';
@@ -17,16 +17,27 @@ export const App: FC = () => {
 	);
 
 	const { bombsAmount } = PROPS_BY_DIFFICULTY[difficultyLevel];
+	const [flagsAmount, setFlagsAmount] = useState<number>(bombsAmount);
 
 	const updateGameBoard = (row: number, column: number, cellState: BoardCellState): void => {
-		if (cellState.cellValue === BOMB && cellState.isRevealed) {
+		const { cellValue, isRevealed, isFlagged } = cellState;
+
+		if (cellValue === BOMB && isRevealed) {
 			revealBoard();
 			setIsLoserDialogOpen(true);
-		} else if (checkIsWon()) {
+		} else if (!isFlagged || flagsAmount != 0) {
+			if (isFlagged) {
+				setFlagsAmount(add(-1));
+			} else if (!isFlagged && !isRevealed) {
+				setFlagsAmount(add(1));
+			}
+
+			setGameBoard(set(`${row}.${column}`, cellState));
+		}
+
+		if (checkIsWon()) {
 			revealBoard();
 			setIsWinnerDialogOpen(true);
-		} else {
-			setGameBoard(set(`${row}.${column}`, cellState));
 		}
 	};
 
@@ -44,13 +55,15 @@ export const App: FC = () => {
 			)
 		);
 
-	const resetGameBoard = (newDifficultyLevel: DifficultyLevel = difficultyLevel): void =>
-		pipe(initializeGameBoard, setGameBoard)(newDifficultyLevel);
+	const resetGameBoard = (newDifficultyLevel: DifficultyLevel = difficultyLevel): void => {
+		setGameBoard(initializeGameBoard(newDifficultyLevel));
+		setFlagsAmount(bombsAmount);
+	};
 
 	return (
 		<>
 			<Navbar {...{ resetGameBoard, setDifficultyLevel, difficultyLevel }} />
-			<FlagsAmountIndicator {...{ difficultyLevel }} />
+			<FlagsAmountIndicator {...{ difficultyLevel, flagsAmount }} />
 			<GameBoard
 				{...{
 					difficultyLevel,
