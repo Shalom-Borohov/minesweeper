@@ -8,12 +8,10 @@ import {
 	Tooltip,
 	Typography,
 } from '@mui/material';
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 import { DIFFICULTY_LEVELS, TITLE, TOOLTIP_TITLE } from './constants';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { NavbarProps } from './types';
-import { RevealedCellsContextValue } from '../context/types';
-import { RevealedCellsContext } from '../context';
 import { map, over, path, pipe, upperFirst } from 'lodash/fp';
 import { renderDifficultyLevelMenuItem } from './functions';
 
@@ -22,9 +20,7 @@ export const Navbar: FC<NavbarProps> = ({
 	setDifficultyLevel,
 	difficultyLevel,
 }) => {
-	const { resetRevealedCells } = useContext<RevealedCellsContextValue>(RevealedCellsContext);
-
-	const startNewGame = () => over([resetGameBoard, resetRevealedCells])();
+	const startNewGame = (): void => resetGameBoard();
 
 	return (
 		<AppBar>

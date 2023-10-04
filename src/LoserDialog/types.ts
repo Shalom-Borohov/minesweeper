@@ -4,5 +4,5 @@ import { DifficultyLevel } from '../GameBoard/types';
 export interface LoserDialogProps {
 	isOpen: boolean;
 	setIsOpen: Dispatch<SetStateAction<boolean>>;
-	resetGameBoard: (difficultyLevel: DifficultyLevel) => void;
+	resetGameBoard: (difficultyLevel?: DifficultyLevel) => void;
 }

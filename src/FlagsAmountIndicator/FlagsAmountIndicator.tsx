@@ -8,11 +8,11 @@ export const FlagsAmountIndicator: FC<FlagsAmountIndicatorProps> = ({
 	difficultyLevel,
 	flagsAmount,
 }) => {
-	const { columnCellsAmount, cellSize } = PROPS_BY_DIFFICULTY[difficultyLevel];
+	const { cellsInRow, cellSize } = PROPS_BY_DIFFICULTY[difficultyLevel];
 
 	return (
 		<Stack direction='row' justifyContent='center'>
-			<Stack direction='row' width={cellSize * columnCellsAmount} mb={1} alignItems='baseline'>
+			<Stack direction='row' width={cellSize * cellsInRow} mb={1} alignItems='baseline'>
 				<Icon fontSize='medium'>
 					<TourIcon htmlColor='red' />
 				</Icon>

@@ -10,7 +10,7 @@ import { CELL_VALUE_COLORS } from './constants';
 export const BoardCell: FC<BoardCellProps> = ({
 	cellState,
 	updateGameBoard,
-	rowCellsAmount,
+	cellsInColumn,
 	cellSize,
 }) => {
 	const { cellValue, isFlagged, isRevealed, row, column } = cellState;
@@ -32,7 +32,7 @@ export const BoardCell: FC<BoardCellProps> = ({
 		<Grid
 			item
 			width={cellSize}
-			sx={{ [`@media (max-width: ${cellSize * rowCellsAmount}px)`]: { width: cellSize / 2 } }}
+			sx={{ [`@media (max-width: ${cellSize * cellsInColumn}px)`]: { width: cellSize / 2 } }}
 			height='inherit'>
 			<Card
 				sx={{

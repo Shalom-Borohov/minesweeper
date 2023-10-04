@@ -1,15 +1,11 @@
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 import { F, over, pipe } from 'lodash/fp';
 import { GAME_WON_TITLE, NEW_GAME_TEXT } from './constants';
 import { WinnerDialogProps } from './types';
-import { RevealedCellsContextValue } from '../context/types';
-import { RevealedCellsContext } from '../context';
 
 export const WinnerDialog: FC<WinnerDialogProps> = ({ isOpen, setIsOpen, resetGameBoard }) => {
-	const { resetRevealedCells } = useContext<RevealedCellsContextValue>(RevealedCellsContext);
-
-	const startNewGame = () => over([pipe(F, setIsOpen), resetGameBoard, resetRevealedCells])();
+	const startNewGame = (): void[] => over<void>([pipe(F, setIsOpen), resetGameBoard])();
 
 	return (
 		<Dialog open={isOpen}>
