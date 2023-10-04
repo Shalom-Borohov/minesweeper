@@ -30,11 +30,6 @@ export const initializeGameBoard = (difficultyLevel: DifficultyLevel): BoardCell
 		reduce<number, BoardCellState[][]>(addBomb(cellsInColumn, cellsInRow), gameBoard)
 	)(bombsAmount);
 
-	// const boardWithZeroClusters = pipe(
-	// 	times<number>(identity),
-	// 	reduce<number, BoardCellState[][]>(addCellToCluster(cellsInRow), boardWithBombs)
-	// )(cellsInRow * cellsInColumn);
-
 	return boardWithBombs;
 };
 
@@ -135,16 +130,28 @@ export const revealZeroCluster = curry(
 		const locationsLeftToReveal: Coordinate[] = [];
 
 		while (!isEqual(location, newLocation)) {
+			location = { ...newLocation };
 			const { row: newRow, col: newCol } = newLocation;
 			const cell: BoardCellState = set<BoardCellState>(
 				'isRevealed',
 				true,
 				newBoard[newRow][newCol]
 			);
-			location = { ...newLocation };
 
 			newBoard = set<BoardCellState[][]>(`${newRow}.${newCol}`, cell, newBoard);
 			const coordinates: Coordinate[] = getCoordinatesAroundCell(newLocation);
+
+			for (const coordinate of coordinates) {
+				if (ensureUnrevealedNotEmptyCell(newBoard, coordinate)) {
+					const cell: BoardCellState = set<BoardCellState>(
+						'isRevealed',
+						true,
+						newBoard[coordinate.row][coordinate.col]
+					);
+
+					newBoard = set<BoardCellState[][]>(`${coordinate.row}.${coordinate.col}`, cell, newBoard);
+				}
+			}
 
 			for (const coordinate of coordinates) {
 				if (ensureUnrevealedEmptyCell(newBoard, coordinate)) {
@@ -163,6 +170,12 @@ export const revealZeroCluster = curry(
 		);
 	}
 );
+
+const ensureUnrevealedNotEmptyCell = (
+	gameBoard: BoardCellState[][],
+	{ row, col }: Coordinate
+): boolean =>
+	ensureUnrevealedCell(gameBoard, { row, col }) && gameBoard[row][col].cellValue !== EMPTY_CELL;
 
 const ensureUnrevealedEmptyCell = (
 	gameBoard: BoardCellState[][],

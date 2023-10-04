@@ -23,11 +23,14 @@ export const App: FC = () => {
 	const updateGameBoard = (row: number, column: number, cellState: BoardCellState): void => {
 		const { cellValue, isRevealed, isFlagged } = cellState;
 
+		let newGameBoard = gameBoard;
+
 		if (cellValue === BOMB && isRevealed) {
 			revealBoard();
 			setIsLoserDialogOpen(true);
+			return;
 		} else if (cellValue === EMPTY_CELL && isRevealed) {
-			setGameBoard(revealZeroCluster({ row, col: column }));
+			newGameBoard = revealZeroCluster({ row, col: column }, gameBoard);
 		} else if (!isFlagged || flagsAmount != 0) {
 			if (isFlagged) {
 				setFlagsAmount(add(-1));
@@ -35,16 +38,17 @@ export const App: FC = () => {
 				setFlagsAmount(add(1));
 			}
 
-			setGameBoard(set(`${row}.${column}`, cellState));
+			newGameBoard = set(`${row}.${column}`, cellState, gameBoard);
 		}
 
-		if (checkIsWon()) {
-			revealBoard();
+		if (checkIsWon(newGameBoard)) {
 			setIsWinnerDialogOpen(true);
 		}
+
+		setGameBoard(newGameBoard);
 	};
 
-	const checkIsWon = () =>
+	const checkIsWon = (gameBoard: BoardCellState[][]): boolean =>
 		pipe(
 			flatten,
 			reject<BoardCellState>(prop('isRevealed')),
@@ -60,7 +64,7 @@ export const App: FC = () => {
 
 	const resetGameBoard = (newDifficultyLevel: DifficultyLevel = difficultyLevel): void => {
 		setGameBoard(initializeGameBoard(newDifficultyLevel));
-		setFlagsAmount(bombsAmount);
+		setFlagsAmount(PROPS_BY_DIFFICULTY[newDifficultyLevel].bombsAmount);
 	};
 
 	return (
