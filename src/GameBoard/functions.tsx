@@ -122,7 +122,7 @@ export const revealBoardAroundCoordinate = curry(
 	}
 );
 
-export const revealZeroCluster = curry(
+export const revealEmptyCluster = curry(
 	({ row, col }: Coordinate, gameBoard: BoardCellState[][]): BoardCellState[][] => {
 		let location: Coordinate = { row: -1, col: -1 };
 		let newLocation: Coordinate = { row, col };
@@ -164,7 +164,7 @@ export const revealZeroCluster = curry(
 		}
 
 		return reduce<Coordinate, BoardCellState[][]>(
-			(prevBoard, location) => revealZeroCluster(location, prevBoard),
+			(prevBoard, location) => revealEmptyCluster(location, prevBoard),
 			newBoard,
 			locationsLeftToReveal
 		);

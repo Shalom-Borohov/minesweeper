@@ -12,5 +12,4 @@ export const INITIALIZED_CELL: Omit<BoardCellState, 'row' | 'column'> = {
 	isRevealed: false,
 	isFlagged: false,
 	cellValue: EMPTY_CELL,
-	zeroClusterId: '',
 };

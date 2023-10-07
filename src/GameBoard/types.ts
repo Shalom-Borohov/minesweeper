@@ -23,7 +23,6 @@ export interface GameBoardDifficultyProps {
 export type DifficultyLevel = 'easy' | 'medium' | 'hard';
 export type PropsByDifficulty = Record<DifficultyLevel, GameBoardDifficultyProps>;
 export interface BoardCellState {
-	zeroClusterId: string;
 	isRevealed: boolean;
 	isFlagged: boolean;
 	cellValue: number;

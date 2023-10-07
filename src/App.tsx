@@ -7,7 +7,7 @@ import { FlagsAmountIndicator } from './FlagsAmountIndicator';
 import { WinnerDialog } from './WinnerDialog';
 import { BoardCellState, DifficultyLevel } from './GameBoard/types';
 import { BOMB, EMPTY_CELL, PROPS_BY_DIFFICULTY } from './GameBoard/constants';
-import { revealZeroCluster } from './GameBoard/functions';
+import { revealEmptyCluster } from './GameBoard/functions';
 
 export const App: FC = () => {
 	const [difficultyLevel, setDifficultyLevel] = useState<DifficultyLevel>('easy');
@@ -28,9 +28,10 @@ export const App: FC = () => {
 		if (cellValue === BOMB && isRevealed) {
 			revealBoard();
 			setIsLoserDialogOpen(true);
+
 			return;
 		} else if (cellValue === EMPTY_CELL && isRevealed) {
-			newGameBoard = revealZeroCluster({ row, col: column }, gameBoard);
+			newGameBoard = revealEmptyCluster({ row, col: column }, gameBoard);
 		} else if (!isFlagged || flagsAmount != 0) {
 			if (isFlagged) {
 				setFlagsAmount(add(-1));
