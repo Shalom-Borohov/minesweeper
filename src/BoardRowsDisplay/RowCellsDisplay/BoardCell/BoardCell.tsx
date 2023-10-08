@@ -1,7 +1,7 @@
 import { FC, SyntheticEvent } from 'react';
 import { BoardCellProps } from './types';
 import { Box, Card, CardActionArea, Grid, Typography } from '@mui/material';
-import { BOMB } from '../constants';
+import { BOMB } from '../../constants';
 import CrisisAlertIcon from '@mui/icons-material/CrisisAlert';
 import TourIcon from '@mui/icons-material/Tour';
 import { inheritSizeStyle } from './styles';

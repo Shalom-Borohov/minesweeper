@@ -2,7 +2,8 @@ import { Icon, Stack, Typography } from '@mui/material';
 import TourIcon from '@mui/icons-material/Tour';
 import { FC } from 'react';
 import { FlagsAmountIndicatorProps } from './types';
-import { PROPS_BY_DIFFICULTY } from '../GameBoard/constants';
+import { PROPS_BY_DIFFICULTY } from '../BoardRowsDisplay/constants';
+import { unselectableText } from './styles';
 
 export const FlagsAmountIndicator: FC<FlagsAmountIndicatorProps> = ({
 	difficultyLevel,
@@ -21,7 +22,7 @@ export const FlagsAmountIndicator: FC<FlagsAmountIndicatorProps> = ({
 					fontWeight='400'
 					ml={1}
 					textAlign='start'
-					sx={{ userSelect: 'none' }}>
+					sx={unselectableText}>
 					{flagsAmount}
 				</Typography>
 			</Stack>

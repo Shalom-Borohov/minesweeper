@@ -1,4 +1,4 @@
-import { DifficultyLevel } from '../GameBoard/types';
+import { DifficultyLevel } from '../BoardRowsDisplay/types';
 
 export interface FlagsAmountIndicatorProps {
 	difficultyLevel: DifficultyLevel;

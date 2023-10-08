@@ -1,13 +1,21 @@
 import { FC, useState } from 'react';
 import { Navbar } from './Navbar';
-import { GameBoard, initializeGameBoard } from './GameBoard';
-import { pipe, set, map, flatten, prop, reject, propEq, add } from 'lodash/fp';
+import {
+	BoardRowsDisplay,
+	initializeGameBoard,
+	ensureGameLost,
+	ensureGameWon,
+	ensureRevealedEmptyCell,
+	revealBoard,
+	revealEmptyCluster,
+	PROPS_BY_DIFFICULTY,
+	DifficultyLevel,
+	BoardCellState,
+} from './BoardRowsDisplay';
+import { set, add } from 'lodash/fp';
 import { LoserDialog } from './LoserDialog';
 import { FlagsAmountIndicator } from './FlagsAmountIndicator';
 import { WinnerDialog } from './WinnerDialog';
-import { BoardCellState, DifficultyLevel } from './GameBoard/types';
-import { BOMB, EMPTY_CELL, PROPS_BY_DIFFICULTY } from './GameBoard/constants';
-import { revealEmptyCluster } from './GameBoard/functions';
 
 export const App: FC = () => {
 	const [difficultyLevel, setDifficultyLevel] = useState<DifficultyLevel>('easy');
@@ -21,47 +29,25 @@ export const App: FC = () => {
 	const [flagsAmount, setFlagsAmount] = useState<number>(bombsAmount);
 
 	const updateGameBoard = (row: number, column: number, cellState: BoardCellState): void => {
-		const { cellValue, isRevealed, isFlagged } = cellState;
+		const { cellValue, isRevealed, isFlagged }: BoardCellState = cellState;
 
-		let newGameBoard = gameBoard;
+		let newGameBoard: BoardCellState[][] = set(`${row}.${column}`, cellState, gameBoard);
 
-		if (cellValue === BOMB && isRevealed) {
-			revealBoard();
+		if (ensureGameLost(cellValue, isRevealed)) {
+			newGameBoard = revealBoard(gameBoard);
 			setIsLoserDialogOpen(true);
-
-			return;
-		} else if (cellValue === EMPTY_CELL && isRevealed) {
+		} else if (ensureRevealedEmptyCell(cellValue, isRevealed)) {
 			newGameBoard = revealEmptyCluster({ row, col: column }, gameBoard);
-		} else if (!isFlagged || flagsAmount != 0) {
-			if (isFlagged) {
-				setFlagsAmount(add(-1));
-			} else if (!isFlagged && !isRevealed) {
-				setFlagsAmount(add(1));
-			}
-
-			newGameBoard = set(`${row}.${column}`, cellState, gameBoard);
+		} else if ((!isFlagged || flagsAmount != 0) && !isRevealed) {
+			isFlagged ? setFlagsAmount(add(-1)) : setFlagsAmount(add(1));
 		}
 
-		if (checkIsWon(newGameBoard)) {
+		if (ensureGameWon(newGameBoard, bombsAmount)) {
 			setIsWinnerDialogOpen(true);
 		}
 
 		setGameBoard(newGameBoard);
 	};
-
-	const checkIsWon = (gameBoard: BoardCellState[][]): boolean =>
-		pipe(
-			flatten,
-			reject<BoardCellState>(prop('isRevealed')),
-			propEq('length', bombsAmount)
-		)(gameBoard);
-
-	const revealBoard = () =>
-		setGameBoard(
-			map<BoardCellState[], BoardCellState[]>(
-				map<BoardCellState, BoardCellState>(pipe(set('isRevealed', true), set('isFlagged', false)))
-			)
-		);
 
 	const resetGameBoard = (newDifficultyLevel: DifficultyLevel = difficultyLevel): void => {
 		setGameBoard(initializeGameBoard(newDifficultyLevel));
@@ -72,7 +58,7 @@ export const App: FC = () => {
 		<>
 			<Navbar {...{ resetGameBoard, setDifficultyLevel, difficultyLevel }} />
 			<FlagsAmountIndicator {...{ difficultyLevel, flagsAmount }} />
-			<GameBoard
+			<BoardRowsDisplay
 				{...{
 					difficultyLevel,
 					gameBoard,

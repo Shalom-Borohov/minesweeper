@@ -5,7 +5,7 @@ import { F, over, pipe } from 'lodash/fp';
 import { GAME_OVER_TEXT, GAME_OVER_TITLE, NEW_GAME_TEXT } from './constants';
 
 export const LoserDialog: FC<LoserDialogProps> = ({ isOpen, setIsOpen, resetGameBoard }) => {
-	const startNewGame = () => over([pipe(F, setIsOpen), resetGameBoard])();
+	const startNewGame = (): void[] => over<void>([pipe(F, setIsOpen), resetGameBoard])();
 
 	return (
 		<Dialog open={isOpen}>

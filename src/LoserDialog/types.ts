@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { DifficultyLevel } from '../GameBoard/types';
+import { DifficultyLevel } from '../BoardRowsDisplay/types';
 
 export interface LoserDialogProps {
 	isOpen: boolean;

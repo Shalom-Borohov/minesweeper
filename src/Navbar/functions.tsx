@@ -1,6 +1,6 @@
 import { MenuItem } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
-import { DifficultyLevel } from '../GameBoard/types';
+import { DifficultyLevel } from '../BoardRowsDisplay/types';
 import { upperFirst } from 'lodash/fp';
 
 export const renderDifficultyLevelMenuItem = (difficultyLevel: DifficultyLevel) => (
