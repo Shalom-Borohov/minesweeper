@@ -13,7 +13,7 @@ import { difficultyLevels, title, tooltipTitle } from './constants';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { map, over, path, pipe, upperFirst } from 'lodash/fp';
 import { renderDifficultyLevelMenuItem } from './functions';
-import { DifficultyLevel } from '../Board/types';
+import { DifficultyLevel } from '../Types';
 
 export interface NavbarProps {
 	resetGameBoard: (difficultyLevel: DifficultyLevel) => void;

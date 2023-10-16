@@ -3,5 +3,5 @@ export interface Cell {
 	isFlagged: boolean;
 	cellValue: number;
 	row: number;
-	column: number;
+	col: number;
 }

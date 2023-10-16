@@ -4,29 +4,33 @@ import { bomb } from '../../constants';
 import CrisisAlertIcon from '@mui/icons-material/CrisisAlert';
 import TourIcon from '@mui/icons-material/Tour';
 import { cellValueColors } from './constants';
-import { Cell, BoardSettings } from '../../types';
+import { Cell, BoardSettings } from '../../../Types';
 
 export interface BoardCellProps extends Pick<BoardSettings, 'cellsInColumn' | 'cellSize'> {
-	cellState: Cell;
-	updateGameBoard: (row: number, column: number, cellState: Cell) => void;
+	cell: Cell;
+	revealCells: (cell: Cell) => void;
+	toggleFlags: (cell: Cell) => void;
 }
 
-export const BoardCell: FC<BoardCellProps> = ({
-	cellState,
-	updateGameBoard,
+const BoardCell: FC<BoardCellProps> = ({
+	cell,
+	revealCells,
 	cellsInColumn,
 	cellSize,
+	toggleFlags,
 }) => {
-	const { cellValue, isFlagged, isRevealed, row, column } = cellState;
+	const { cellValue, isFlagged, isRevealed } = cell;
 
 	const toggleFlagged = (event: SyntheticEvent): void => {
 		event.preventDefault();
 
-		updateGameBoard(row, column, { ...cellState, isFlagged: !isFlagged });
+		toggleFlags({ ...cell, isFlagged: !isFlagged });
 	};
 
 	const revealCell = (): void => {
-		updateGameBoard(row, column, { ...cellState, isRevealed: true });
+		if (!isFlagged) {
+			revealCells({ ...cell, isRevealed: true });
+		}
 	};
 
 	return (
@@ -76,3 +80,5 @@ export const BoardCell: FC<BoardCellProps> = ({
 		</Grid>
 	);
 };
+
+export default BoardCell;

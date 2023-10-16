@@ -13,7 +13,7 @@ import {
 	set,
 	times,
 } from 'lodash/fp';
-import { Cell, Coordinate, DifficultyLevel, BoardSettings } from '../Board/types';
+import { Cell, Coordinate, DifficultyLevel, BoardSettings } from '../Types';
 import { bomb, emptyCell, initializedCell, settingsByDifficulty } from '../Board/constants';
 
 export const initializeGameBoard = (difficultyLevel: DifficultyLevel): Cell[][] => {
@@ -32,7 +32,7 @@ export const initializeGameBoard = (difficultyLevel: DifficultyLevel): Cell[][] 
 
 const createEmptyBoard = (cellsInColumn: number, cellsInRow: number): Cell[][] =>
 	times<Cell[]>(
-		(row) => times<Cell>((column) => ({ ...initializedCell, row, column }), cellsInRow),
+		(row) => times<Cell>((col) => ({ ...initializedCell, row, col }), cellsInRow),
 		cellsInColumn
 	);
 
@@ -49,7 +49,7 @@ const addBomb = curry(
 
 		const boardWithBomb = set<Cell[][]>(
 			`${row}.${col}`,
-			{ ...initializedCell, cellValue: bomb, row, column: col },
+			{ ...initializedCell, cellValue: bomb, row, col },
 			gameBoard
 		);
 
@@ -92,7 +92,7 @@ const revealCell = (gameBoard: Cell[][], { row, col }: Coordinate) => {
 		return gameBoard;
 	}
 
-	const cell: Cell = set<Cell>('isRevealed', true, gameBoard[row][col]);
+	const cell: Cell = pipe(set('isFlagged', false), set('isRevealed', true))(gameBoard[row][col]);
 
 	return set<Cell[][]>(`${row}.${col}`, cell, gameBoard);
 };
@@ -131,12 +131,6 @@ const ensureCellInBounds = (gameBoard: Cell[][], { row, col }: Coordinate): bool
 export const revealBoard = map<Cell[], Cell[]>(
 	map<Cell, Cell>(pipe(set('isRevealed', true), set('isFlagged', false)))
 );
-
-export const ensureGameLost = (cellValue: number, isRevealed: boolean): boolean =>
-	cellValue === bomb && isRevealed;
-
-export const ensureRevealedEmptyCell = (cellValue: number, isRevealed: boolean): boolean =>
-	cellValue === emptyCell && isRevealed;
 
 export const ensureGameWon = (gameBoard: Cell[][], bombsAmount: number): boolean =>
 	pipe(

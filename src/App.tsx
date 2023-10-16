@@ -2,16 +2,9 @@ import { Dispatch, FC, SetStateAction, useState } from 'react';
 import Navbar from './Navbar';
 import { set, add } from 'lodash/fp';
 import FlagsCounter from './FlagsCounter';
-import {
-	ensureGameLost,
-	ensureGameWon,
-	ensureRevealedEmptyCell,
-	initializeGameBoard,
-	revealBoard,
-	revealEmptyCell,
-} from './Logic';
+import { ensureGameWon, initializeGameBoard, revealBoard, revealEmptyCell } from './Logic';
 import Board from './Board';
-import { settingsByDifficulty } from './Board/constants';
+import { bomb, emptyCell, settingsByDifficulty } from './Board/constants';
 import Dialog from './Dialog';
 import {
 	gameOverContent,
@@ -31,18 +24,29 @@ export const App: FC = () => {
 	const { bombsAmount } = settingsByDifficulty[difficultyLevel];
 	const [flagsAmount, setFlagsAmount] = useState<number>(bombsAmount);
 
-	const updateGameBoard = (row: number, column: number, cellState: Cell): void => {
-		const { cellValue, isRevealed, isFlagged }: Cell = cellState;
+	const toggleFlags = (cell: Cell): void => {
+		const { isFlagged, row, col, isRevealed }: Cell = cell;
 
-		let newGameBoard: Cell[][] = set(`${row}.${column}`, cellState, gameBoard);
+		if ((!isFlagged || flagsAmount != 0) && !isRevealed) {
+			isFlagged ? setFlagsAmount(add(-1)) : setFlagsAmount(add(1));
+			setGameBoard(set(`${row}.${col}`, cell));
+		}
+	};
 
-		if (ensureGameLost(cellValue, isRevealed)) {
+	const revealCells = (cell: Cell): void => {
+		const { cellValue, isRevealed, row, col }: Cell = cell;
+
+		let newGameBoard: Cell[][] = set(`${row}.${col}`, cell, gameBoard);
+
+		if (!isRevealed) {
+			return;
+		}
+
+		if (cellValue === bomb) {
 			newGameBoard = revealBoard(gameBoard);
 			setIsLoserDialogOpen(true);
-		} else if (ensureRevealedEmptyCell(cellValue, isRevealed)) {
-			newGameBoard = revealEmptyCell({ row, col: column }, gameBoard);
-		} else if ((!isFlagged || flagsAmount != 0) && !isRevealed) {
-			isFlagged ? setFlagsAmount(add(-1)) : setFlagsAmount(add(1));
+		} else if (cellValue === emptyCell) {
+			newGameBoard = revealEmptyCell({ row, col }, gameBoard);
 		}
 
 		if (ensureGameWon(newGameBoard, bombsAmount)) {
@@ -72,7 +76,8 @@ export const App: FC = () => {
 					gameBoard,
 					setIsLoserDialogOpen,
 					setIsWinnerDialogOpen,
-					updateGameBoard,
+					revealCells,
+					toggleFlags,
 				}}
 			/>
 			<Dialog

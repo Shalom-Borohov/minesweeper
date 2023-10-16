@@ -1,14 +1,11 @@
 import { curry } from 'lodash/fp';
-import { BoardCell, BoardCellProps } from './BoardCell';
+import BoardCell, { BoardCellProps } from './BoardCell';
 import { ReactElement } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Cell } from '../types';
+import { Cell } from '../../Types';
 
 export const renderBoardCell = curry(
-	(
-		boardCellProps: Omit<BoardCellProps, 'cellState'>,
-		cellState: Cell
-	): ReactElement<BoardCellProps> => (
-		<BoardCell {...{ cellState }} key={uuidv4()} {...boardCellProps} />
+	(boardCellProps: Omit<BoardCellProps, 'cell'>, cell: Cell): ReactElement<BoardCellProps> => (
+		<BoardCell {...{ cell: cell }} key={uuidv4()} {...boardCellProps} />
 	)
 );

@@ -2,7 +2,7 @@ import { Grid } from '@mui/material';
 import { Dispatch, FC, SetStateAction } from 'react';
 import { map } from 'lodash/fp';
 import { renderBoardRow } from './functions';
-import { Cell, DifficultyLevel } from './types';
+import { Cell, DifficultyLevel } from '../Types';
 import { settingsByDifficulty } from './constants';
 
 export interface BoardProps {
@@ -10,7 +10,8 @@ export interface BoardProps {
 	setIsLoserDialogOpen: Dispatch<SetStateAction<boolean>>;
 	setIsWinnerDialogOpen: Dispatch<SetStateAction<boolean>>;
 	difficultyLevel: DifficultyLevel;
-	updateGameBoard: (row: number, column: number, cellState: Cell) => void;
+	revealCells: (cell: Cell) => void;
+	toggleFlags: (cell: Cell) => void;
 }
 
 const Board: FC<BoardProps> = ({ gameBoard, difficultyLevel, ...restBoardRowProps }) => {

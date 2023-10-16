@@ -3,11 +3,12 @@ import { FC } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { map } from 'lodash/fp';
 import { renderBoardCell } from './functions';
-import { Cell, BoardSettings } from '../types';
+import { BoardSettings, Cell } from '../../Types';
 
 export interface BoardRowProps extends Pick<BoardSettings, 'cellsInColumn' | 'cellSize'> {
 	rowCellsStates: Cell[];
-	updateGameBoard: (row: number, column: number, cellState: Cell) => void;
+	revealCells: (cell: Cell) => void;
+	toggleFlags: (cell: Cell) => void;
 }
 
 const BoardRow: FC<BoardRowProps> = ({
