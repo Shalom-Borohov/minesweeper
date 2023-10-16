@@ -1,14 +1,15 @@
 import { Icon, Stack, Typography } from '@mui/material';
 import TourIcon from '@mui/icons-material/Tour';
 import { FC } from 'react';
-import { FlagsAmountIndicatorProps } from './types';
 import { PROPS_BY_DIFFICULTY } from '../BoardRowsDisplay/constants';
-import { unselectableText } from './styles';
+import { DifficultyLevel } from '../BoardRowsDisplay';
 
-export const FlagsAmountIndicator: FC<FlagsAmountIndicatorProps> = ({
-	difficultyLevel,
-	flagsAmount,
-}) => {
+interface FlagsCounterProps {
+	difficultyLevel: DifficultyLevel;
+	flagsAmount: number;
+}
+
+const FlagsCounter: FC<FlagsCounterProps> = ({ difficultyLevel, flagsAmount }) => {
 	const { cellsInRow, cellSize } = PROPS_BY_DIFFICULTY[difficultyLevel];
 
 	return (
@@ -17,16 +18,12 @@ export const FlagsAmountIndicator: FC<FlagsAmountIndicatorProps> = ({
 				<Icon fontSize='medium'>
 					<TourIcon htmlColor='red' />
 				</Icon>
-				<Typography
-					// fontSize='x-large'
-					// fontWeight='400'
-					ml={1}
-					// textAlign='start'
-					variant='h5'
-					sx={unselectableText}>
+				<Typography ml={1} variant='h5' sx={{ userSelect: 'none' }}>
 					{flagsAmount}
 				</Typography>
 			</Stack>
 		</Stack>
 	);
 };
+
+export default FlagsCounter;

@@ -1,1 +1,0 @@
-export { FlagsAmountIndicator } from "./FlagsAmountIndicator";

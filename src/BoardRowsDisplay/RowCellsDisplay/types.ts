@@ -1,7 +1,7 @@
-import { BoardCellState, GameDifficultyProps } from '../types';
+import { Cell, GameDifficultyProps } from '../types';
 
 export interface RowCellsDisplayProps
 	extends Pick<GameDifficultyProps, 'cellsInColumn' | 'cellSize'> {
-	rowCellsStates: BoardCellState[];
-	updateGameBoard: (row: number, column: number, cellState: BoardCellState) => void;
+	rowCellsStates: Cell[];
+	updateGameBoard: (row: number, column: number, cellState: Cell) => void;
 }

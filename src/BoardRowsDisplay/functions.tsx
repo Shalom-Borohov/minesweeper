@@ -1,5 +1,5 @@
 import { curry, flatten, map, pipe, prop, propEq, reject, set } from 'lodash/fp';
-import { BoardCellState } from './types';
+import { Cell } from './types';
 import { ReactElement } from 'react';
 import { RowCellsDisplay } from './RowCellsDisplay/RowCellsDisplay';
 import { RowCellsDisplayProps } from './RowCellsDisplay/types';
@@ -9,14 +9,14 @@ import { BOMB, EMPTY_CELL } from './constants';
 export const renderBoardRow = curry(
 	(
 		rowCellsDisplayProps: Omit<RowCellsDisplayProps, 'rowCellsStates'>,
-		rowCellsStates: BoardCellState[]
+		rowCellsStates: Cell[]
 	): ReactElement<RowCellsDisplayProps> => (
 		<RowCellsDisplay key={uuidv4()} {...{ rowCellsStates }} {...rowCellsDisplayProps} />
 	)
 );
 
-export const revealBoard = map<BoardCellState[], BoardCellState[]>(
-	map<BoardCellState, BoardCellState>(pipe(set('isRevealed', true), set('isFlagged', false)))
+export const revealBoard = map<Cell[], Cell[]>(
+	map<Cell, Cell>(pipe(set('isRevealed', true), set('isFlagged', false)))
 );
 
 export const ensureGameLost = (cellValue: number, isRevealed: boolean): boolean =>
@@ -25,9 +25,9 @@ export const ensureGameLost = (cellValue: number, isRevealed: boolean): boolean 
 export const ensureRevealedEmptyCell = (cellValue: number, isRevealed: boolean): boolean =>
 	cellValue === EMPTY_CELL && isRevealed;
 
-export const ensureGameWon = (gameBoard: BoardCellState[][], bombsAmount: number): boolean =>
+export const ensureGameWon = (gameBoard: Cell[][], bombsAmount: number): boolean =>
 	pipe(
-		flatten<BoardCellState>,
-		reject<BoardCellState>(prop<BoardCellState, 'isRevealed'>('isRevealed')),
+		flatten<Cell>,
+		reject<Cell>(prop<Cell, 'isRevealed'>('isRevealed')),
 		propEq<number>('length', bombsAmount)
 	)(gameBoard);

@@ -5,7 +5,7 @@ export interface Coordinate {
 	col: number;
 }
 
-export interface BoardCellState {
+export interface Cell {
 	isRevealed: boolean;
 	isFlagged: boolean;
 	cellValue: number;
@@ -16,11 +16,11 @@ export interface BoardCellState {
 export type DifficultyLevel = 'easy' | 'medium' | 'hard';
 
 export interface BoardRowsDisplayProps {
-	gameBoard: BoardCellState[][];
+	gameBoard: Cell[][];
 	setIsLoserDialogOpen: Dispatch<SetStateAction<boolean>>;
 	setIsWinnerDialogOpen: Dispatch<SetStateAction<boolean>>;
 	difficultyLevel: DifficultyLevel;
-	updateGameBoard: (row: number, column: number, cellState: BoardCellState) => void;
+	updateGameBoard: (row: number, column: number, cellState: Cell) => void;
 }
 
 export interface GameDifficultyProps {

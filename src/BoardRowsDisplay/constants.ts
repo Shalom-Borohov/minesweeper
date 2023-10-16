@@ -1,4 +1,4 @@
-import { BoardCellState, PropsByDifficulty } from './types';
+import { Cell, PropsByDifficulty } from './types';
 
 export const PROPS_BY_DIFFICULTY: PropsByDifficulty = {
 	easy: { bombsAmount: 10, cellsInRow: 10, cellsInColumn: 7, cellSize: 50 },
@@ -8,7 +8,7 @@ export const PROPS_BY_DIFFICULTY: PropsByDifficulty = {
 
 export const BOMB: number = -1;
 export const EMPTY_CELL: number = 0;
-export const INITIALIZED_CELL: Omit<BoardCellState, 'row' | 'column'> = {
+export const INITIALIZED_CELL: Omit<Cell, 'row' | 'column'> = {
 	isRevealed: false,
 	isFlagged: false,
 	cellValue: EMPTY_CELL,
