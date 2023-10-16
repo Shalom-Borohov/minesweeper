@@ -35,7 +35,7 @@ export const Navbar: FC<NavbarProps> = ({
 					mx={2}>
 					<Stack direction='row'>
 						<Tooltip title={TOOLTIP_TITLE}>
-							<IconButton sx={{ ':focus': { outline: 0 } }} onClick={startNewGame}>
+							<IconButton onClick={startNewGame}>
 								<RestartAltIcon fontSize='large' htmlColor='white' />
 							</IconButton>
 						</Tooltip>

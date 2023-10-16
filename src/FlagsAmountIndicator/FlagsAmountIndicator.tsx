@@ -18,10 +18,11 @@ export const FlagsAmountIndicator: FC<FlagsAmountIndicatorProps> = ({
 					<TourIcon htmlColor='red' />
 				</Icon>
 				<Typography
-					fontSize='x-large'
-					fontWeight='400'
+					// fontSize='x-large'
+					// fontWeight='400'
 					ml={1}
-					textAlign='start'
+					// textAlign='start'
+					variant='h5'
 					sx={unselectableText}>
 					{flagsAmount}
 				</Typography>

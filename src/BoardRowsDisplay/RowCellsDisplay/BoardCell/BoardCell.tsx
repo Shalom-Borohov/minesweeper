@@ -28,6 +28,8 @@ export const BoardCell: FC<BoardCellProps> = ({
 		}
 	};
 
+	console.log('yes');
+
 	return (
 		<Grid
 			item
