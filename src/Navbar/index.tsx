@@ -8,12 +8,18 @@ import {
 	Tooltip,
 	Typography,
 } from '@mui/material';
-import { FC } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 import { DIFFICULTY_LEVELS, TITLE, TOOLTIP_TITLE } from './constants';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import { NavbarProps } from './types';
 import { map, over, path, pipe, upperFirst } from 'lodash/fp';
 import { renderDifficultyLevelMenuItem } from './functions';
+import { DifficultyLevel } from '../Board/types';
+
+export interface NavbarProps {
+	resetGameBoard: (difficultyLevel?: DifficultyLevel) => void;
+	setDifficultyLevel: Dispatch<SetStateAction<DifficultyLevel>>;
+	difficultyLevel: DifficultyLevel;
+}
 
 export const Navbar: FC<NavbarProps> = ({
 	resetGameBoard,

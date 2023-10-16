@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
-
 export interface Coordinate {
 	row: number;
 	col: number;
@@ -14,14 +12,6 @@ export interface Cell {
 }
 
 export type DifficultyLevel = 'easy' | 'medium' | 'hard';
-
-export interface BoardRowsDisplayProps {
-	gameBoard: Cell[][];
-	setIsLoserDialogOpen: Dispatch<SetStateAction<boolean>>;
-	setIsWinnerDialogOpen: Dispatch<SetStateAction<boolean>>;
-	difficultyLevel: DifficultyLevel;
-	updateGameBoard: (row: number, column: number, cellState: Cell) => void;
-}
 
 export interface GameDifficultyProps {
 	cellsInRow: number;

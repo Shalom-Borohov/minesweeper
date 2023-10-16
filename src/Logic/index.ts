@@ -1,11 +1,20 @@
-import { curry, identity, isEqual, isNil, pipe, random, reduce, set, times } from 'lodash/fp';
 import {
-	BOMB,
-	EMPTY_CELL,
-	INITIALIZED_CELL,
-	PROPS_BY_DIFFICULTY,
-} from '../BoardRowsDisplay/constants';
-import { Cell, Coordinate, DifficultyLevel, GameDifficultyProps } from '../BoardRowsDisplay/types';
+	curry,
+	flatten,
+	identity,
+	isNil,
+	map,
+	pipe,
+	prop,
+	propEq,
+	random,
+	reduce,
+	reject,
+	set,
+	times,
+} from 'lodash/fp';
+import { Cell, Coordinate, DifficultyLevel, GameDifficultyProps } from '../Board/types';
+import { BOMB, EMPTY_CELL, INITIALIZED_CELL, PROPS_BY_DIFFICULTY } from '../Board/constants';
 
 export const initializeGameBoard = (difficultyLevel: DifficultyLevel): Cell[][] => {
 	const { bombsAmount, cellsInColumn, cellsInRow }: GameDifficultyProps =
@@ -118,3 +127,20 @@ const ensureOrdinaryCell = (gameBoard: Cell[][], { row, col }: Coordinate): bool
 
 const ensureCellInBounds = (gameBoard: Cell[][], { row, col }: Coordinate): boolean =>
 	!isNil(gameBoard[row]) && !isNil(gameBoard[row][col]);
+
+export const revealBoard = map<Cell[], Cell[]>(
+	map<Cell, Cell>(pipe(set('isRevealed', true), set('isFlagged', false)))
+);
+
+export const ensureGameLost = (cellValue: number, isRevealed: boolean): boolean =>
+	cellValue === BOMB && isRevealed;
+
+export const ensureRevealedEmptyCell = (cellValue: number, isRevealed: boolean): boolean =>
+	cellValue === EMPTY_CELL && isRevealed;
+
+export const ensureGameWon = (gameBoard: Cell[][], bombsAmount: number): boolean =>
+	pipe(
+		flatten<Cell>,
+		reject<Cell>(prop<Cell, 'isRevealed'>('isRevealed')),
+		propEq<number>('length', bombsAmount)
+	)(gameBoard);

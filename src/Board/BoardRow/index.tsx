@@ -1,11 +1,16 @@
 import { Grid } from '@mui/material';
 import { FC } from 'react';
-import { RowCellsDisplayProps } from './types';
 import { v4 as uuidv4 } from 'uuid';
 import { map } from 'lodash/fp';
 import { renderBoardCell } from './functions';
+import { Cell, GameDifficultyProps } from '../types';
 
-export const RowCellsDisplay: FC<RowCellsDisplayProps> = ({
+export interface BoardRowProps extends Pick<GameDifficultyProps, 'cellsInColumn' | 'cellSize'> {
+	rowCellsStates: Cell[];
+	updateGameBoard: (row: number, column: number, cellState: Cell) => void;
+}
+
+const BoardRow: FC<BoardRowProps> = ({
 	cellSize,
 	cellsInColumn,
 	rowCellsStates,
@@ -25,3 +30,5 @@ export const RowCellsDisplay: FC<RowCellsDisplayProps> = ({
 		{map(renderBoardCell({ cellsInColumn, cellSize, ...restBoardCellProps }), rowCellsStates)}
 	</Grid>
 );
+
+export default BoardRow;

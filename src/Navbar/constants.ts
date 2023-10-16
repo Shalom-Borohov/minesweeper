@@ -1,4 +1,4 @@
-import { DifficultyLevel } from '../BoardRowsDisplay/types';
+import { DifficultyLevel } from '../Board/types';
 
 export const TITLE: string = 'שוּלָה המוקשים';
 export const TOOLTIP_TITLE: string = 'משחק חדש';

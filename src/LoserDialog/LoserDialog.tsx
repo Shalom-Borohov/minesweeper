@@ -1,8 +1,14 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import { FC } from 'react';
-import { LoserDialogProps } from './types';
+import { Dispatch, FC, SetStateAction } from 'react';
 import { F, over, pipe } from 'lodash/fp';
 import { GAME_OVER_TEXT, GAME_OVER_TITLE, NEW_GAME_TEXT } from './constants';
+import { DifficultyLevel } from '../Board/types';
+
+export interface LoserDialogProps {
+	isOpen: boolean;
+	setIsOpen: Dispatch<SetStateAction<boolean>>;
+	resetGameBoard: (difficultyLevel?: DifficultyLevel) => void;
+}
 
 export const LoserDialog: FC<LoserDialogProps> = ({ isOpen, setIsOpen, resetGameBoard }) => {
 	const startNewGame = (): void[] => over<void>([pipe(F, setIsOpen), resetGameBoard])();
