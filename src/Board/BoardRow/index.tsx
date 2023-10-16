@@ -3,9 +3,9 @@ import { FC } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { map } from 'lodash/fp';
 import { renderBoardCell } from './functions';
-import { Cell, GameDifficultyProps } from '../types';
+import { Cell, BoardSettings } from '../types';
 
-export interface BoardRowProps extends Pick<GameDifficultyProps, 'cellsInColumn' | 'cellSize'> {
+export interface BoardRowProps extends Pick<BoardSettings, 'cellsInColumn' | 'cellSize'> {
 	rowCellsStates: Cell[];
 	updateGameBoard: (row: number, column: number, cellState: Cell) => void;
 }

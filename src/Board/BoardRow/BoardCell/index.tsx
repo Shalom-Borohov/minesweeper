@@ -1,12 +1,12 @@
 import { FC, SyntheticEvent } from 'react';
 import { Box, Card, CardActionArea, Grid, Typography } from '@mui/material';
-import { BOMB } from '../../constants';
+import { bomb } from '../../constants';
 import CrisisAlertIcon from '@mui/icons-material/CrisisAlert';
 import TourIcon from '@mui/icons-material/Tour';
-import { CELL_VALUE_COLORS } from './constants';
-import { Cell, GameDifficultyProps } from '../../types';
+import { cellValueColors } from './constants';
+import { Cell, BoardSettings } from '../../types';
 
-export interface BoardCellProps extends Pick<GameDifficultyProps, 'cellsInColumn' | 'cellSize'> {
+export interface BoardCellProps extends Pick<BoardSettings, 'cellsInColumn' | 'cellSize'> {
 	cellState: Cell;
 	updateGameBoard: (row: number, column: number, cellState: Cell) => void;
 }
@@ -62,13 +62,10 @@ export const BoardCell: FC<BoardCellProps> = ({
 							<TourIcon htmlColor='red' />
 						) : (
 							isRevealed &&
-							(cellValue === BOMB ? (
+							(cellValue === bomb ? (
 								<CrisisAlertIcon htmlColor='red' />
 							) : (
-								<Typography
-									fontWeight='bold'
-									fontSize='x-large'
-									color={CELL_VALUE_COLORS[cellValue]}>
+								<Typography fontWeight='bold' fontSize='x-large' color={cellValueColors[cellValue]}>
 									{cellValue === 0 ? '' : cellValue}
 								</Typography>
 							))

@@ -9,30 +9,24 @@ import {
 	Typography,
 } from '@mui/material';
 import { Dispatch, FC, SetStateAction } from 'react';
-import { DIFFICULTY_LEVELS, TITLE, TOOLTIP_TITLE } from './constants';
+import { difficultyLevels, title, tooltipTitle } from './constants';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { map, over, path, pipe, upperFirst } from 'lodash/fp';
 import { renderDifficultyLevelMenuItem } from './functions';
 import { DifficultyLevel } from '../Board/types';
 
 export interface NavbarProps {
-	resetGameBoard: (difficultyLevel?: DifficultyLevel) => void;
+	resetGameBoard: (difficultyLevel: DifficultyLevel) => void;
 	setDifficultyLevel: Dispatch<SetStateAction<DifficultyLevel>>;
 	difficultyLevel: DifficultyLevel;
 }
 
-export const Navbar: FC<NavbarProps> = ({
-	resetGameBoard,
-	setDifficultyLevel,
-	difficultyLevel,
-}) => {
-	const startNewGame = (): void => resetGameBoard();
+const Navbar: FC<NavbarProps> = ({ resetGameBoard, setDifficultyLevel, difficultyLevel }) => {
+	const startNewGame = (): void => resetGameBoard(difficultyLevel);
 
 	return (
 		<AppBar>
-			<Toolbar
-				disableGutters
-				sx={{ width: 'inherit', '@media (min-width: 600px)': { minHeight: 'inherit' } }}>
+			<Toolbar disableGutters sx={{ width: 'inherit', height: '65px' }}>
 				<Stack
 					width='inherit'
 					direction='row'
@@ -40,7 +34,7 @@ export const Navbar: FC<NavbarProps> = ({
 					alignItems='center'
 					mx={2}>
 					<Stack direction='row'>
-						<Tooltip title={TOOLTIP_TITLE}>
+						<Tooltip title={tooltipTitle}>
 							<IconButton onClick={startNewGame}>
 								<RestartAltIcon fontSize='large' htmlColor='white' />
 							</IconButton>
@@ -51,14 +45,16 @@ export const Navbar: FC<NavbarProps> = ({
 							onChange={pipe(path('target.value'), over([setDifficultyLevel, resetGameBoard]))}
 							renderValue={upperFirst}
 							value={difficultyLevel}>
-							{map(renderDifficultyLevelMenuItem, DIFFICULTY_LEVELS)}
+							{map(renderDifficultyLevelMenuItem, difficultyLevels)}
 						</Select>
 					</Stack>
 					<Typography variant='h3' sx={{ userSelect: 'none' }}>
-						{TITLE}
+						{title}
 					</Typography>
 				</Stack>
 			</Toolbar>
 		</AppBar>
 	);
 };
+
+export default Navbar;

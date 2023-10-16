@@ -2,7 +2,7 @@ import { Icon, Stack, Typography } from '@mui/material';
 import TourIcon from '@mui/icons-material/Tour';
 import { FC } from 'react';
 import { DifficultyLevel } from '../Board/types';
-import { PROPS_BY_DIFFICULTY } from '../Board/constants';
+import { settingsByDifficulty } from '../Board/constants';
 
 interface FlagsCounterProps {
 	difficultyLevel: DifficultyLevel;
@@ -10,7 +10,7 @@ interface FlagsCounterProps {
 }
 
 const FlagsCounter: FC<FlagsCounterProps> = ({ difficultyLevel, flagsAmount }) => {
-	const { cellsInRow, cellSize } = PROPS_BY_DIFFICULTY[difficultyLevel];
+	const { cellsInRow, cellSize } = settingsByDifficulty[difficultyLevel];
 
 	return (
 		<Stack direction='row' justifyContent='center'>

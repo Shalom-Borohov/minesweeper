@@ -1,8 +1,7 @@
 // eslint-disable-next-line lodash-fp/use-fp
 import { NumericDictionary } from 'lodash';
 
-export const LOSER_DIALOG_DELAY_TIME_MS = 100;
-export const CELL_VALUE_COLORS: NumericDictionary<string> = {
+export const cellValueColors: NumericDictionary<string> = {
 	0: 'black',
 	1: 'blue',
 	2: 'green',

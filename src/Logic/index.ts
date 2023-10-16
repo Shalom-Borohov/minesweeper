@@ -13,12 +13,12 @@ import {
 	set,
 	times,
 } from 'lodash/fp';
-import { Cell, Coordinate, DifficultyLevel, GameDifficultyProps } from '../Board/types';
-import { BOMB, EMPTY_CELL, INITIALIZED_CELL, PROPS_BY_DIFFICULTY } from '../Board/constants';
+import { Cell, Coordinate, DifficultyLevel, BoardSettings } from '../Board/types';
+import { bomb, emptyCell, initializedCell, settingsByDifficulty } from '../Board/constants';
 
 export const initializeGameBoard = (difficultyLevel: DifficultyLevel): Cell[][] => {
-	const { bombsAmount, cellsInColumn, cellsInRow }: GameDifficultyProps =
-		PROPS_BY_DIFFICULTY[difficultyLevel];
+	const { bombsAmount, cellsInColumn, cellsInRow }: BoardSettings =
+		settingsByDifficulty[difficultyLevel];
 
 	const gameBoard: Cell[][] = createEmptyBoard(cellsInColumn, cellsInRow);
 
@@ -32,7 +32,7 @@ export const initializeGameBoard = (difficultyLevel: DifficultyLevel): Cell[][] 
 
 const createEmptyBoard = (cellsInColumn: number, cellsInRow: number): Cell[][] =>
 	times<Cell[]>(
-		(row) => times<Cell>((column) => ({ ...INITIALIZED_CELL, row, column }), cellsInRow),
+		(row) => times<Cell>((column) => ({ ...initializedCell, row, column }), cellsInRow),
 		cellsInColumn
 	);
 
@@ -42,14 +42,14 @@ const addBomb = curry(
 		let row = randomFromStart(cellsInColumn - 1);
 		let col = randomFromStart(cellsInRow - 1);
 
-		while (gameBoard[row][col].cellValue === BOMB) {
+		while (gameBoard[row][col].cellValue === bomb) {
 			row = randomFromStart(cellsInColumn - 1);
 			col = randomFromStart(cellsInRow - 1);
 		}
 
 		const boardWithBomb = set<Cell[][]>(
 			`${row}.${col}`,
-			{ ...INITIALIZED_CELL, cellValue: BOMB, row, column: col },
+			{ ...initializedCell, cellValue: bomb, row, column: col },
 			gameBoard
 		);
 
@@ -114,16 +114,16 @@ export const revealEmptyCell = (coordinate: Coordinate, gameBoard: Cell[][]): Ce
 };
 
 const ensureUnrevealedValuedCell = (gameBoard: Cell[][], { row, col }: Coordinate): boolean =>
-	ensureUnrevealedCell(gameBoard, { row, col }) && gameBoard[row][col].cellValue !== EMPTY_CELL;
+	ensureUnrevealedCell(gameBoard, { row, col }) && gameBoard[row][col].cellValue !== emptyCell;
 
 const ensureUnrevealedEmptyCell = (gameBoard: Cell[][], { row, col }: Coordinate): boolean =>
-	ensureUnrevealedCell(gameBoard, { row, col }) && gameBoard[row][col].cellValue === EMPTY_CELL;
+	ensureUnrevealedCell(gameBoard, { row, col }) && gameBoard[row][col].cellValue === emptyCell;
 
 const ensureUnrevealedCell = (gameBoard: Cell[][], { row, col }: Coordinate): boolean =>
 	ensureCellInBounds(gameBoard, { row, col }) && !gameBoard[row][col].isRevealed;
 
 const ensureOrdinaryCell = (gameBoard: Cell[][], { row, col }: Coordinate): boolean =>
-	ensureCellInBounds(gameBoard, { row, col }) && gameBoard[row][col].cellValue != BOMB;
+	ensureCellInBounds(gameBoard, { row, col }) && gameBoard[row][col].cellValue != bomb;
 
 const ensureCellInBounds = (gameBoard: Cell[][], { row, col }: Coordinate): boolean =>
 	!isNil(gameBoard[row]) && !isNil(gameBoard[row][col]);
@@ -133,10 +133,10 @@ export const revealBoard = map<Cell[], Cell[]>(
 );
 
 export const ensureGameLost = (cellValue: number, isRevealed: boolean): boolean =>
-	cellValue === BOMB && isRevealed;
+	cellValue === bomb && isRevealed;
 
 export const ensureRevealedEmptyCell = (cellValue: number, isRevealed: boolean): boolean =>
-	cellValue === EMPTY_CELL && isRevealed;
+	cellValue === emptyCell && isRevealed;
 
 export const ensureGameWon = (gameBoard: Cell[][], bombsAmount: number): boolean =>
 	pipe(

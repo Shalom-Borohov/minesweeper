@@ -1,9 +1,7 @@
-import { FC, useState } from 'react';
-import { Navbar } from './Navbar';
+import { Dispatch, FC, SetStateAction, useState } from 'react';
+import Navbar from './Navbar';
 import { set, add } from 'lodash/fp';
 import FlagsCounter from './FlagsCounter';
-import { WinnerDialog } from './WinnerDialog';
-import { LoserDialog } from './LoserDialog/LoserDialog';
 import {
 	ensureGameLost,
 	ensureGameWon,
@@ -13,15 +11,24 @@ import {
 	revealEmptyCell,
 } from './Logic';
 import Board from './Board';
-import { Cell, DifficultyLevel } from './Board/types';
-import { PROPS_BY_DIFFICULTY } from './Board/constants';
+import { settingsByDifficulty } from './Board/constants';
+import Dialog from './Dialog';
+import {
+	gameOverContent,
+	gameOverTitle,
+	gameWonTitle,
+	newGameExclamationText,
+	newGameQuestionText,
+} from './constants';
+import { Cell } from './Types/Cell';
+import { DifficultyLevel } from './Types/DifficultyLevel';
 
 export const App: FC = () => {
 	const [difficultyLevel, setDifficultyLevel] = useState<DifficultyLevel>('easy');
 	const [isLoserDialogOpen, setIsLoserDialogOpen] = useState<boolean>(false);
 	const [isWinnerDialogOpen, setIsWinnerDialogOpen] = useState<boolean>(false);
 	const [gameBoard, setGameBoard] = useState<Cell[][]>(initializeGameBoard(difficultyLevel));
-	const { bombsAmount } = PROPS_BY_DIFFICULTY[difficultyLevel];
+	const { bombsAmount } = settingsByDifficulty[difficultyLevel];
 	const [flagsAmount, setFlagsAmount] = useState<number>(bombsAmount);
 
 	const updateGameBoard = (row: number, column: number, cellState: Cell): void => {
@@ -45,9 +52,14 @@ export const App: FC = () => {
 		setGameBoard(newGameBoard);
 	};
 
-	const resetGameBoard = (newDifficultyLevel: DifficultyLevel = difficultyLevel): void => {
+	const resetGameBoard = (newDifficultyLevel: DifficultyLevel): void => {
 		setGameBoard(initializeGameBoard(newDifficultyLevel));
-		setFlagsAmount(PROPS_BY_DIFFICULTY[newDifficultyLevel].bombsAmount);
+		setFlagsAmount(settingsByDifficulty[newDifficultyLevel].bombsAmount);
+	};
+
+	const closeDialog = (setIsOpen: Dispatch<SetStateAction<boolean>>) => (): void => {
+		setIsOpen(false);
+		resetGameBoard(difficultyLevel);
 	};
 
 	return (
@@ -63,15 +75,18 @@ export const App: FC = () => {
 					updateGameBoard,
 				}}
 			/>
-			<WinnerDialog
+			<Dialog
 				isOpen={isWinnerDialogOpen}
-				setIsOpen={setIsWinnerDialogOpen}
-				{...{ resetGameBoard }}
+				close={closeDialog(setIsWinnerDialogOpen)}
+				closeButtonText={newGameExclamationText}
+				title={gameWonTitle}
 			/>
-			<LoserDialog
+			<Dialog
 				isOpen={isLoserDialogOpen}
-				setIsOpen={setIsLoserDialogOpen}
-				{...{ resetGameBoard }}
+				close={closeDialog(setIsLoserDialogOpen)}
+				content={gameOverContent}
+				closeButtonText={newGameQuestionText}
+				title={gameOverTitle}
 			/>
 		</>
 	);

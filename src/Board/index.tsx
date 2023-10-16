@@ -3,7 +3,7 @@ import { Dispatch, FC, SetStateAction } from 'react';
 import { map } from 'lodash/fp';
 import { renderBoardRow } from './functions';
 import { Cell, DifficultyLevel } from './types';
-import { PROPS_BY_DIFFICULTY } from './constants';
+import { settingsByDifficulty } from './constants';
 
 export interface BoardProps {
 	gameBoard: Cell[][];
@@ -14,7 +14,7 @@ export interface BoardProps {
 }
 
 const Board: FC<BoardProps> = ({ gameBoard, difficultyLevel, ...restBoardRowProps }) => {
-	const gameBoardDifficultyProps = PROPS_BY_DIFFICULTY[difficultyLevel];
+	const gameBoardDifficultyProps = settingsByDifficulty[difficultyLevel];
 
 	return (
 		<Grid container direction='row' width='100vw'>
