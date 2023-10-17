@@ -13,8 +13,8 @@ import {
 	set,
 	times,
 } from 'lodash/fp';
-import { Cell, Coordinate, DifficultyLevel, BoardSettings } from '../../Types';
-import { bomb, emptyCell, initializedCell, settingsByDifficulty } from '../constants';
+import { Cell, Coordinate, DifficultyLevel, BoardSettings } from '../Types';
+import { bomb, emptyCell, initializedCell, settingsByDifficulty } from '../Game/constants';
 
 export const initializeGameBoard = (difficultyLevel: DifficultyLevel): Cell[][] => {
 	const { bombsAmount, cellsInColumn, cellsInRow }: BoardSettings =

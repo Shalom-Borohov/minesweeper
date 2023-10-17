@@ -4,22 +4,18 @@ import { bomb } from '../../../constants';
 import CrisisAlertIcon from '@mui/icons-material/CrisisAlert';
 import TourIcon from '@mui/icons-material/Tour';
 import { cellValueColors } from './constants';
-import { Cell, BoardSettings } from '../../../Types';
+import { Cell } from '../../../../Types';
+import { useGame } from '../../../../GameProvider';
 
-export interface BoardCellProps extends Pick<BoardSettings, 'cellsInColumn' | 'cellSize'> {
+export interface BoardCellProps {
 	cell: Cell;
 	revealCells: (cell: Cell) => void;
 	toggleFlags: (cell: Cell) => void;
 }
 
-const BoardCell: FC<BoardCellProps> = ({
-	cell,
-	revealCells,
-	cellsInColumn,
-	cellSize,
-	toggleFlags,
-}) => {
+const BoardCell: FC<BoardCellProps> = ({ cell, revealCells, toggleFlags }) => {
 	const { cellValue, isFlagged, isRevealed } = cell;
+	const { cellSize, cellsInColumn } = useGame();
 
 	const toggleFlagged = (event: SyntheticEvent): void => {
 		event.preventDefault();
