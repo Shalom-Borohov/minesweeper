@@ -1,5 +1,5 @@
 import { FC, SyntheticEvent } from 'react';
-import { Box, Card, CardActionArea, Grid, Typography } from '@mui/material';
+import { Box, Card, CardActionArea, Grid, Typography, useTheme } from '@mui/material';
 import { bomb } from '../../../constants';
 import CrisisAlertIcon from '@mui/icons-material/CrisisAlert';
 import TourIcon from '@mui/icons-material/Tour';
@@ -59,11 +59,11 @@ const BoardCell: FC<BoardCellProps> = ({ cell, revealCells, toggleFlags }) => {
 						alignItems='center'
 						justifyContent='center'>
 						{isFlagged ? (
-							<TourIcon htmlColor='red' />
+							<TourIcon color='info' />
 						) : (
 							isRevealed &&
 							(cellValue === bomb ? (
-								<CrisisAlertIcon htmlColor='red' />
+								<CrisisAlertIcon color='info' />
 							) : (
 								<Typography fontWeight='bold' fontSize='x-large' color={cellValueColors[cellValue]}>
 									{cellValue === 0 ? '' : cellValue}

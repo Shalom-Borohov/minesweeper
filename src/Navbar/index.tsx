@@ -30,12 +30,12 @@ const Navbar: FC = () => {
 					<Stack direction='row'>
 						<Tooltip title={tooltipTitle}>
 							<IconButton onClick={startNewGame}>
-								<RestartAltIcon fontSize='large' htmlColor='white' />
+								<RestartAltIcon fontSize='large' sx={{ color: 'info.light' }} />
 							</IconButton>
 						</Tooltip>
 						<Divider />
 						<Select
-							sx={{ color: 'white', ml: 2 }}
+							sx={{ color: 'info.light', ml: 2 }}
 							onChange={pipe(path('target.value'), over([setDifficultyLevel, resetGameBoard]))}
 							renderValue={upperFirst}
 							value={difficultyLevel}>

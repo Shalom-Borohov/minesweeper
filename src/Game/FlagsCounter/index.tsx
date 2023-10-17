@@ -10,7 +10,7 @@ const FlagsCounter: FC = () => {
 		<Stack direction='row' justifyContent='center'>
 			<Stack direction='row' mb={1} alignItems='baseline'>
 				<Icon fontSize='medium'>
-					<TourIcon htmlColor='red' />
+					<TourIcon color='info' />
 				</Icon>
 				<Typography ml={1} variant='h5' sx={{ userSelect: 'none' }}>
 					{flagsAmount}
