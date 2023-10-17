@@ -1,6 +1,6 @@
 import { FC, SyntheticEvent } from 'react';
 import { Box, Card, CardActionArea, Grid, Typography } from '@mui/material';
-import { bomb } from '../../constants';
+import { bomb } from '../../../constants';
 import CrisisAlertIcon from '@mui/icons-material/CrisisAlert';
 import TourIcon from '@mui/icons-material/Tour';
 import { cellValueColors } from './constants';

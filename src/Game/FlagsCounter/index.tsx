@@ -2,7 +2,7 @@ import { Icon, Stack, Typography } from '@mui/material';
 import TourIcon from '@mui/icons-material/Tour';
 import { FC } from 'react';
 import { DifficultyLevel } from '../Board/types';
-import { settingsByDifficulty } from '../Board/constants';
+import { settingsByDifficulty } from '../constants';
 
 interface FlagsCounterProps {
 	difficultyLevel: DifficultyLevel;

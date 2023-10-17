@@ -3,7 +3,7 @@ import { Dispatch, FC, SetStateAction } from 'react';
 import { map } from 'lodash/fp';
 import { renderBoardRow } from './functions';
 import { Cell, DifficultyLevel } from '../Types';
-import { settingsByDifficulty } from './constants';
+import { settingsByDifficulty } from '../constants';
 
 export interface BoardProps {
 	gameBoard: Cell[][];
